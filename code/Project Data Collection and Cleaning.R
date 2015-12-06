@@ -2,12 +2,13 @@ library(XML)
 
 # Data Frame of NBA Champions
 url.champs <- 'https://www.ticketcity.com/nba/nba-finals-tickets/nba-finals-champions.html'
-download.file(url, 'rawdata/champions.html')
+download.file(url.champs, 'rawdata/champions.html')
 nba.champions <- readHTMLTable('rawdata/champions.html')
 nba.champions <- as.data.frame(nba.champions[[2]])
 nba.champions[] <- lapply(nba.champions, as.character)
 colnames(nba.champions) <- nba.champions[1, ]
 nba.champions <- nba.champions[-1, ]
+write.csv(players, file = "data/champions.csv")
 ## Cut this down to champions from 1995 - 2015
 
 # Player heights
