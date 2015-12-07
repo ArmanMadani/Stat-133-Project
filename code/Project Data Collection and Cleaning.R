@@ -1,15 +1,34 @@
-library(XML)
-
 # Data Frame of NBA Champions
+library(XML)
 url.champs <- 'https://www.ticketcity.com/nba/nba-finals-tickets/nba-finals-champions.html'
-download.file(url.champs, 'rawdata/champions.html')
-nba.champions <- readHTMLTable('rawdata/champions.html')
+download.file(url.champs, paste0(getwd(),"/Champions.html"))
+nba.champions <- readHTMLTable(paste0(getwd(),"/Champions.html"))
 nba.champions <- as.data.frame(nba.champions[[2]])
 nba.champions[] <- lapply(nba.champions, as.character)
 colnames(nba.champions) <- nba.champions[1, ]
 nba.champions <- nba.champions[-1, ]
-write.csv(players, file = "data/champions.csv")
-## Cut this down to champions from 1995 - 2015
+
+
+# Getting the statistics for the champion team and the league average
+champion.stats <- c()
+nba.champions$Champion[nba.champions$Year==1995]
+for (i in 1:21){
+  file.path <- paste0("data/leagues_NBA_", 1994 + i, "_team.csv")
+  files <- read.csv(file.path)
+  champion.stats[[i]] <- files[c("Team", "FGA", "FGP", "X3PA", "X3PP", "years")]
+}
+
+for (i in 1:21){
+  YEARS <- 1994 + i
+  Champion <- nba.champions$Champion[nba.champions$Year==YEARS]
+  yeardata <- champion.stats[[i]]
+  yeardata$Team <- gsub('\\*', '', as.character(yeardata$Team))
+  champion.stats[[i]] <- yeardata[yeardata$Team == Champion | yeardata$Team == "Average", ]
+}
+
+all.champs <- do.call(rbind, champion.stats)
+all.champs <- all.champs[-seq(from = 2, to = nrow(all.champs), by = 2L), ]
+write.csv(all.champs, file = "data/champdata.csv")
 
 # Player heights
 url.player_height <- 'http://www.draftexpress.com/nba-draft-history/?syear=1995'
