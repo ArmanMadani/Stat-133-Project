@@ -15,7 +15,18 @@ download.file(url.champs, "rawdata/Champions.html")
 
 # Download data for drafted player heights
 for (i in 1995:2015) {
-  url.p_height <- 
+  url_p_height <- 
     paste0('http://www.draftexpress.com/nba-draft-history/?syear=', i)
-  download.file(url.p_height, paste0('rawdata/player_heights', i, '.html'))
+  download.file(url_p_height, paste0('rawdata/player_heights', i, '.html'))
 }
+
+# Download data for champions' season stats
+for (i in 1996:2015) {
+  url_championship_stats <- 
+    paste0('http://www.basketball-reference.com/leagues/NBA_', i, '.html')
+  download.file(url_championship_stats, paste0('rawdata/championship_stats', i, ',html'))
+}
+
+# Download data for Case Study Players
+
+# Download data for Championship team lineups
