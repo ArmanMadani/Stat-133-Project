@@ -1,8 +1,6 @@
 # Data Frame of NBA Champions
 library(XML)
-url.champs <- 'https://www.ticketcity.com/nba/nba-finals-tickets/nba-finals-champions.html'
-download.file(url.champs, paste0(getwd(),"/Champions.html"))
-nba.champions <- readHTMLTable(paste0(getwd(),"/Champions.html"))
+nba.champions <- readHTMLTable("../rawdata/Champions.html")
 nba.champions <- as.data.frame(nba.champions[[2]])
 nba.champions[] <- lapply(nba.champions, as.character)
 colnames(nba.champions) <- nba.champions[1, ]
@@ -13,9 +11,10 @@ nba.champions <- nba.champions[-1, ]
 champion.stats <- c()
 nba.champions$Champion[nba.champions$Year==1995]
 for (i in 1:21){
-  file.path <- paste0("data/leagues_NBA_", 1994 + i, "_team.csv")
+  file.path <- paste0("../data/leagues_NBA_", 1994 + i, "_team.csv")
   files <- read.csv(file.path)
-  champion.stats[[i]] <- files[c("Team", "FGA", "FGP", "X3PA", "X3PP", "years")]
+  champion.stats[[i]] <- 
+    files[c("Team", "FGA", "FGP", "X3PA", "X3PP", "years")]
 }
 
 for (i in 1:21){
@@ -23,25 +22,22 @@ for (i in 1:21){
   Champion <- nba.champions$Champion[nba.champions$Year==YEARS]
   yeardata <- champion.stats[[i]]
   yeardata$Team <- gsub('\\*', '', as.character(yeardata$Team))
-  champion.stats[[i]] <- yeardata[yeardata$Team == Champion | yeardata$Team == "Average", ]
+  champion.stats[[i]] <- 
+    yeardata[yeardata$Team == Champion | yeardata$Team == "Average", ]
 }
 
 all.champs <- do.call(rbind, champion.stats)
 all.champs <- all.champs[-seq(from = 2, to = nrow(all.champs), by = 2L), ]
-write.csv(all.champs, file = "data/champdata.csv")
+write.csv(all.champs, file = "../data/champdata.csv")
 
 # Player heights
-url.player_height <- 'http://www.draftexpress.com/nba-draft-history/?syear=1995'
-download.file(url.player_height, 'rawdata/player_heights1995.html')
-players <- readHTMLTable('rawdata/player_heights1995.html')
+players <- readHTMLTable('../rawdata/player_heights1995.html')
 players <- as.data.frame(players[[9]])
 players["year"] = 1995
 players <- players[c("Name", "Height", "Weight", "year")]
 
 for (i in 1996:2015) {
-  url.player_height <- paste0('http://www.draftexpress.com/nba-draft-history/?syear=', i)
-  download.file(url.player_height, paste0('rawdata/player_heights', i, '.html'))
-  p <- readHTMLTable(paste0('rawdata/player_heights', i, '.html'))
+  p <- readHTMLTable(paste0('../rawdata/player_heights', i, '.html'))
   p <- as.data.frame(p[[9]])
   p["year"] = i
   p <- p[c("Name", "Height", "Weight", "year")]
@@ -57,4 +53,4 @@ to_inches <- function(height) {
 
 players["Height"] <- unlist(lapply(players["Height"][[1]], to_inches))
 
-write.csv(players, file = "data/players.csv")
+write.csv(players, file = "../data/players.csv")
