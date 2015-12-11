@@ -5,6 +5,7 @@ nba.champions <- as.data.frame(nba.champions[[2]])
 nba.champions[] <- lapply(nba.champions, as.character)
 colnames(nba.champions) <- nba.champions[1, ]
 nba.champions <- nba.champions[-1, ]
+write.csv(nba.champions, '../data/nba.champs.csv')
 
 
 # Getting the statistics for the champion team and the league average
