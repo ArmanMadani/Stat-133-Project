@@ -1,0 +1,18 @@
+{
+    "contents" : "library(XML)\n\n# Data Cleaning for Champions.html\nnba_champions <- readHTMLTable('rawdata/Champions.html')\nnba_champions <- as.data.frame(nba_champions[[2]])\nnba_champions <- lapply(nba_champions, as.character)\nnba_champions <- as.data.frame(nba_champions)\ncolnames(nba_champions) <- c('Year', 'Champion', 'Score', 'Opponent')\nnba_champions <- nba_champions[-1, ]\nwrite.csv(nba_champions, 'data/Champions.csv')\n\n",
+    "created" : 1449875259378.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1505762657",
+    "id" : "E60950F0",
+    "lastKnownWriteTime" : 1449876327,
+    "path" : "~/Stat133Project/code/Data Cleaning and Preparation.R",
+    "project_path" : "code/Data Cleaning and Preparation.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

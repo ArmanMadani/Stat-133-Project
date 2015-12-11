@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1449876117190.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "99776C96",
+    "lastKnownWriteTime" : 8101238404013883392,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "qjub3ratjb",
+        "caption" : "nba_champions",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=nba_champions&cache_key=qjub3ratjb",
+        "displayedObservations" : 69,
+        "environment" : "",
+        "object" : "nba_champions",
+        "totalObservations" : 69,
+        "variables" : 4
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
