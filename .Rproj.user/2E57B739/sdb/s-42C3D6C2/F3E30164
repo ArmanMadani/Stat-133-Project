@@ -1,12 +1,12 @@
 {
-    "contents" : "## File for Initializing Project ##\n\n# Initialize subdirectories\ndir.create(\"code\")\ndir.create(\"data\")\ndir.create(\"images\")\ndir.create(\"rawdata\")\ndir.create(\"report\")\ndir.create(\"resources\")\n\n# Download data for champions\nurl_champs <- \n  'https://www.ticketcity.com/nba/nba-finals-tickets/nba-finals-champions.html'\ndownload.file(url.champs, \"rawdata/Champions.html\")\n\n# Download data for drafted player heights\nfor (i in 1995:2015) {\n  url_p_height <- \n    paste0('http://www.draftexpress.com/nba-draft-history/?syear=', i)\n  download.file(url.p.height, paste0('rawdata/player_heights', i, '.html'))\n}\n\n# Download data for championship team stats\nfor (i in 1996:2015) {\n  url_championship_stats <- \n    paste0('http://www.basketball-reference.com/leagues/NBA_', i, '.html')\n  download.file(url_championship_stats, paste0('rawdata/championship_stats', i, '.html'))\n}\n\n# Download data for championship lineups\n\n# Download data for Case Study Players",
+    "contents" : "## File for Initializing Project ##\n\n# Initialize subdirectories\ndir.create(\"code\")\ndir.create(\"data\")\ndir.create(\"images\")\ndir.create(\"rawdata\")\ndir.create(\"report\")\ndir.create(\"resources\")\n\n# Download data for champions\nurl.champs <- \n  'https://www.ticketcity.com/nba/nba-finals-tickets/nba-finals-champions.html'\ndownload.file(url.champs, \"rawdata/Champions.html\")\n\n# Download data for drafted player heights\nfor (i in 1995:2015) {\n  url.p_height <- \n    paste0('http://www.draftexpress.com/nba-draft-history/?syear=', i)\n  download.file(url.p_height, paste0('rawdata/player_heights', i, '.html'))\n}\n",
     "created" : 1449874197640.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2646128458",
+    "hash" : "2834265067",
     "id" : "F3E30164",
-    "lastKnownWriteTime" : 1449875213,
+    "lastKnownWriteTime" : 1449876608,
     "path" : "~/Stat133Project/Skeleton.R",
     "project_path" : "Skeleton.R",
     "properties" : {
