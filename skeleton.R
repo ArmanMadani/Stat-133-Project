@@ -13,7 +13,7 @@ url.champs <-
   'https://www.ticketcity.com/nba/nba-finals-tickets/nba-finals-champions.html'
 download.file(url.champs, "rawdata/Champions.html")
 
-# Download data for player heights
+# Download data for drafted player heights
 for (i in 1995:2015) {
   url.p_height <- 
     paste0('http://www.draftexpress.com/nba-draft-history/?syear=', i)
