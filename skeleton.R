@@ -24,7 +24,7 @@ for (i in 1995:2015) {
 for (i in 1996:2015) {
   url_championship_stats <- 
     paste0('http://www.basketball-reference.com/leagues/NBA_', i, '.html')
-  download.file(url_championship_stats, paste0('rawdata/championship_stats', i, ',html'))
+  download.file(url_championship_stats, paste0('rawdata/championship_stats', i, '.html'))
 }
 
 # Download data for Case Study Players

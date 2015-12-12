@@ -29,7 +29,7 @@ all_champs <- do.call(rbind, champion_stats)
 all_champs <- all_champs[-seq(from = 2, to = nrow(all_champs), by = 2L), ]
 write.csv(all_champs, file = "data/champ_data.csv")
 
-# Drafted Players' Heights
+# Drafted Players' Heights (converted to inches)
 players <- readHTMLTable('rawdata/player_heights1995.html')
 players <- as.data.frame(players[[9]])
 players["year"] = 1995
