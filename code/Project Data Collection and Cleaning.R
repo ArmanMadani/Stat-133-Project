@@ -8,7 +8,7 @@ nba.champions <- nba.champions[-1, ]
 write.csv(nba.champions, '../data/nba.champs.csv')
 
 
-# Getting the statistics for the champion team and the league average
+# Cleaning data for the champion team and the league average
 champion.stats <- c()
 nba.champions$Champion[nba.champions$Year==1995]
 for (i in 1:21){
@@ -34,14 +34,14 @@ write.csv(all.champs, file = "../data/champdata.csv")
 # Player heights
 players <- readHTMLTable('../rawdata/player_heights1995.html')
 players <- as.data.frame(players[[9]])
-players["year"] = 1995
-players <- players[c("Name", "Height", "Weight", "year")]
+players["Year"] = 1995
+players <- players[c("Name", "Height", "Weight", "Year")]
 
 for (i in 1996:2015) {
   p <- readHTMLTable(paste0('../rawdata/player_heights', i, '.html'))
   p <- as.data.frame(p[[9]])
-  p["year"] = i
-  p <- p[c("Name", "Height", "Weight", "year")]
+  p["Year"] = i
+  p <- p[c("Name", "Height", "Weight", "Year")]
   players <- rbind(players, p)
 }
 
@@ -55,3 +55,21 @@ to_inches <- function(height) {
 players["Height"] <- unlist(lapply(players["Height"][[1]], to_inches))
 
 write.csv(players, file = "../data/players.csv")
+
+# Cleaning data for champion rosters
+champ <- readHTMLTable('rawdata/champion_stats1995.html')
+champ <- as.data.frame(champ[[1]])
+champ["Year"] = 1995
+champ <- champ[c("Player", "Pos", "Ht", "Wt", "Year")]
+
+for (i in 1996:2015) {
+  ch <- readHTMLTable(paste0('rawdata/champion_stats', i, '.html'))
+  ch <- as.data.frame(ch[[1]])
+  ch["Year"] = i
+  ch <- ch[c("Player", "Pos", "Ht", "Wt", "Year")]
+  champ <- rbind(champ, ch)
+}
+
+champ["Ht"] <- unlist(lapply(champ["Ht"][[1]], to_inches))
+
+write.csv(champ, file = "data/roster.csv")
