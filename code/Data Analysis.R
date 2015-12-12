@@ -37,6 +37,9 @@ change_in_fgp <- function(x = vec_fgp) {
   return(output)
 }
 
+# Average change in Field Goal Percentage over 20 years
+mean(change_in_fgp())
+
 # Vector of 3-Pt FGA per year
 vec_3pfga <- all_champs$X3PA
 
