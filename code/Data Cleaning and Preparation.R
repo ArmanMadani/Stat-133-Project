@@ -53,3 +53,21 @@ to_inches <- function(height) {
 players["Height"] <- unlist(lapply(players["Height"][[1]], to_inches))
 
 write.csv(players, file = "data/players.csv")
+
+# Cleaning data for champion rosters
+champ <- readHTMLTable('rawdata/champion_stats1995.html')
+champ <- as.data.frame(champ[[1]])
+champ["Year"] = 1995
+champ <- champ[c("Player", "Pos", "Ht", "Wt", "Year")]
+
+for (i in 1996:2015) {
+  ch <- readHTMLTable(paste0('rawdata/champion_stats', i, '.html'))
+  ch <- as.data.frame(ch[[1]])
+  ch["Year"] = i
+  ch <- ch[c("Player", "Pos", "Ht", "Wt", "Year")]
+  champ <- rbind(champ, ch)
+}
+
+champ["Ht"] <- unlist(lapply(champ["Ht"][[1]], to_inches))
+
+write.csv(champ, file = "data/roster.csv")
