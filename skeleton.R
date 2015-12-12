@@ -74,5 +74,5 @@ download.file(url_champ_stats, paste0('rawdata/champion_stats', 2014, '.html'))
 url_champ_stats <- 'http://www.basketball-reference.com/teams/GSW/2015.html'
 download.file(url_champ_stats, paste0('rawdata/champion_stats', 2015, '.html'))
 
-suppressWarnings(source("code/Data_CleanPrep.R"))
+suppressWarnings(source("code/data_cleanprep.R"))
 
