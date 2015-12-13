@@ -1,0 +1,247 @@
+---
+title: 'NBA Trends: Final Report'
+author: "Arman Madani, Eric Zhao, Kuang Li"
+date: "December 12, 2015"
+output: html_document
+---
+
+```{r, echo = FALSE}
+library(knitr)
+library(ggplot2)
+read_chunk('../code/data_cleanprep.R')
+read_chunk('../code/data_analysis.R')
+read_chunk('../code/case_study.R')
+read_chunk('../code/visualizations.R')
+opts_chunk$set(comment=NA, fig.height=3, fig.width=3.5)
+```
+
+Introduction:
+-------------
+
+For our project, we wanted to observe trends in the National Basketball Assocation (NBA). Specifically we wanted to observe the movement toward "Small Ball." The Small Ball (SB) style of play focuses on versatility, speed, and, most importantly 3-point shooting in favor of physical strength, height, and low-post dominance. Our main question was: have successful teams in the past couple decades adopted this style of play? Or is the hype around SB merely perceived? 
+
+We believe that the term "Small Ball" may be a misnomer for an actual NBA trend wherein teams are simply taking more 3-point attempts. Thus, while height, weight, and even field goal percentage may not necessarily be decreasing, there is an increase in three-point field goal attempts.
+
+Data Collection:
+----------------
+
+We began by searching the internet for statistics on NBA teams and champions. We first found successful (championship) teams from 1995 - 2015. For these successful teams, we were primarily looking for data tables which included:  3-point field goals attempted,  3-point field goal percentage, total field goal percentage, and total field goal percentage. Additionally, it was important to obtain data on heights and weights of players on championship teams in order to see if there is any change in the average heights and weights of starting lineups.  
+
+Furthermore, we felt it was necessary to look at NBA Draft picks and individual players as case studies. Draft data is a good indicator of types of players that teams believe they need to improve or build around; thus it would follow that if the physical attributes of particular players moved closer to SB style players over time, teams were beginning to adopt SB. We used case studies to further illustrate the physical attributes associated with adept 3-point shooters as opposed to dominant low-post players. 
+
+To collect data efficiently, we wrote several functions to collect data from internet sources. Using for loops and the paste0() function, we were able to collect data without using repetitive commands for a majority of our raw data. For example:
+
+```{r, eval = FALSE}
+for (i in 1995:2015) {
+  url_championship_stats <- 
+    paste0('http://www.basketball-reference.com/leagues/NBA_', i, '.html')
+  download.file(url_championship_stats, paste0('rawdata/championship_stats', i, '.html'))
+}
+```
+
+This for loop was used to collect data on championship statistics from 1995 - 2015. Many of the functions to collect raw data follow a similar format. 
+
+Data Cleaning and Preparation:
+------------------------------
+
+All of our raw data was initially in a .html format and unusable. We spent much of our time cleaning and preparing the data in order to analyze it. Some of the cleaning and preparation was simple because the .html table was straight forward. For example, our table for NBA championship teams merely included columns for year, champion, result, and opponent. We used basic functions and one lapply() function in order to prepare this specific data set before saving it as a .csv file: 
+
+```{r, eval = FALSE}
+library(XML)
+nba_champions <- readHTMLTable('rawdata/Champions.html')
+nba_champions <- as.data.frame(nba_champions[[2]])
+nba_champions[] <- lapply(nba_champions, as.character)
+colnames(nba_champions) <- c('Year', 'Champion', 'Score', 'Opponent')
+nba_champions <- nba_champions[-1, ]
+write.csv(nba_champions, 'data/Champions.csv')
+```
+
+Other data sets were not as straight forward so we had to use for loops, regular expressions, and subsetting to work across multiple .html files. For example, in order to obtain the appropriate data for championship teams we used the following set of functions: 
+
+```{r, eval = FALSE}
+champion_stats <- c()
+nba_champions$Champion[nba_champions$Year==1995]
+for (i in 1:21) {
+  file.path <- paste0('data/leagues_NBA_', 1994 + i, '_team.csv')
+  files <- read.csv(file.path)
+  champion_stats[[i]] <- 
+    files[c("Team", "FGA", "FGP", "X3PA", "X3PP", "years")]
+}
+for (i in 1:21){
+  years <- 1994 + i
+  champion <- nba_champions$Champion[nba_champions$Year==years]
+  year_data <- champion_stats[[i]]
+  year_data$Team <- gsub('\\*', '', as.character(year_data$Team))
+  champion_stats[[i]] <- 
+    year_data[year_data$Team == champion | year_data$Team == "Average", ]
+}
+all_champs <- do.call(rbind, champion_stats)
+all_champs <- all_champs[-seq(from = 2, to = nrow(all_champs), by = 2L), ]
+write.csv(all_champs, file = "data/champ_data.csv")
+```
+
+Within our cleaning and preparation script, we also added columns to data sets in order to create plots later on. For example, in the roster.csv data set, we included average heights and weights of championship lineups (see below). 
+
+```{r, eval = FALSE}
+for (i in 1995:2015) {
+  ch <- readHTMLTable(paste0('rawdata/champion_stats', i, '.html'))
+  ch <- as.data.frame(ch[[1]])
+  ch["Ht"] <- unlist(lapply(ch["Ht"][[1]], to_inches))
+  ch["Year"] = i
+  ch["Average Height"] = mean(ch$Ht, na.rm = TRUE)
+  ch["Average Weight"] = mean(as.numeric(levels(ch$Wt)), na.rm = TRUE)
+  ch <- ch[c("Player", "Pos", "Ht", "Wt", "Average Height", "Average Weight", "Year")]
+  champ <- rbind(champ, ch)
+}
+write.csv(champ, file = "data/roster.csv")
+```
+
+Data Analysis and Results:
+--------------------------
+
+When it came to analyzing the data, we focused on shooting and field goals which, as aforementioned, is imperative to SB styles of play. We wanted to look at the attempted field goals from year to year, the field goal percentages from year to year, and the percentage of shots that were three pointers (See Below).
+
+```{r, echo = FALSE}
+all_champs <- read.csv("../data/champ_data.csv")
+```
+
+```{r Data Analysis}
+```
+
+As you can see, there appears to be little to no change in 3-point field goal percentage or total field goal percentage, but 3-point attempts increased dramatically over the last 3 years. Additionally, three point attempts appear to decrease dramatically in the late 1990s and from 2008 - 2010. We believe that this is due to teams with low-post emphasis which do not shoot as many 3-pointers but have higher overall field goal percentages. However, we found that average heights and weights of players do not vary from year to year. Below, you will find visualizations which illustrate these points.
+
+```{r, echo = FALSE}
+data <- read.csv(file = "../data/champ_data.csv", header = TRUE)[-c(1)]
+data$X3PP <- data$X3PP * 100
+data$FGP <- data$FGP * 100
+data$X3PtFGA <- data$X3PA/data$FGA * 100
+
+players <- read.csv(file = "../data/players.csv", header = TRUE)
+players_unique <- data.frame(unique(players$Year), 
+                             unique(players$Average_Height), 
+                             unique(players$Average_Weight))
+
+champ <- read.csv(file = "../data/roster.csv", header = TRUE)
+champ$Average_Height[champ$Year == 2003] <- 78.8001
+champ_unique <- data.frame(unique(champ$Year), unique(champ$Average_Height), 
+                           unique(champ$Average_Weight))
+```
+
+```{r Visualization, echo = FALSE}
+```
+
+The average heights and weights of both draft picks and championship lineups may not change but the individual heights and weights of key players may change. 
+
+Case Study of Stephen Curry, Draymond Green, and Tim Duncan:
+------------------------------------------------------------
+
+We decided to study individual players to observe specific physical attributes and shot selection. We chose Stephen Curry because he is the embodiment of the SB trend, he is not particularly tall or strong but is a 3-point shooting specialist. Draymond Green is also an example of a successful SB player, he is a power forward who is undersized for his position but shoots 3-pointers but also drives to the basketball and plays in the low-post. Tim Duncan is an oversized power forward who rarely if ever shoots 3-pointers and operates almost exclusively near the basket. Below you will find a data frame of the three players with their heights, weights, 3-point attempts, and 3-point percentage accompanied by barplots illustrating these points.
+
+### Data Frame:
+
+```{r, echo = FALSE}
+# Stephen Curry: 3-Pt. Specialist
+# 3-Pt Attempts Per Game
+steph_curry_stats <- read.csv("../data/steph_curry_stats.csv")
+steph_curry_3PA <- as.vector(steph_curry_stats$`X3PA`)
+steph_curry_3PA <- steph_curry_3PA[-c(3, 7)] 
+# Positions 3 and 7 omitted because of injury and seasons in progress
+steph_curry_3PA <- as.numeric(steph_curry_3PA)
+steph_curry_3PA <- mean(steph_curry_3PA)
+# 3-Pt Percentage
+steph_curry_3PP <- as.vector(steph_curry_stats$`X3P.`)
+steph_curry_3PP <- steph_curry_3PP[-c(3, 7)]
+steph_curry_3PP <- as.numeric(steph_curry_3PP)
+steph_curry_3PP <- steph_curry_3PP * 100
+steph_curry_3PP <- mean(steph_curry_3PP)
+# Total FG Percentage
+steph_curry_FGP <- as.vector(steph_curry_stats$`FG.`)
+steph_curry_FGP <- as.numeric(steph_curry_FGP) * 100
+steph_curry_FGP <- mean(steph_curry_FGP)
+# Ratio 3-Pt.:Total FGA
+steph_curry_ratio <- as.vector(steph_curry_stats$`X3PA`)
+steph_curry_ratio <-steph_curry_ratio[-c(3, 7)]
+steph_curry_ratio <- as.numeric(steph_curry_ratio)
+steph_curry_FGA <- as.vector(steph_curry_stats$FGA)
+steph_curry_FGA <- steph_curry_FGA[-c(3, 7)]
+steph_curry_FGA <- as.numeric(steph_curry_FGA)
+steph_curry_ratio <- (steph_curry_ratio/steph_curry_FGA) * 100
+# Stephen Curry: Physical Attributes
+steph_curry <- read.csv('../data/steph_curry.csv')
+steph_curry_height <- steph_curry$`Height.w.shoes`
+steph_curry_weight <- as.vector(steph_curry$Weight)
+steph_curry_weight <- as.numeric(steph_curry_weight)
+
+# Draymond Green: Power Forward (Short for Position)
+# 3-Pt Attempts
+draymond_green_stats <- read.csv("../data/draymond_green_stats.csv")
+draymond_green_3PA <- as.vector(draymond_green_stats$`X3PtA`)
+draymond_green_3PA <- as.numeric(draymond_green_3PA)
+# 3-Pt Percentage
+draymond_green_3PP <- as.vector(draymond_green_stats$`X3P.`)
+draymond_green_3PP <- as.numeric(draymond_green_3PP)
+# Total FG Percentage
+draymond_green_FGP <- as.vector(draymond_green_stats$`FG.`)
+draymond_green_FGP <- as.numeric(draymond_green_FGP)
+# Ratio 3-Pt:Total FGA
+draymond_green_FGA <- as.vector(draymond_green_stats$FGA)
+draymond_green_FGA <- as.numeric(draymond_green_FGA)
+draymond_green_ratio <- (draymond_green_3PA/draymond_green_FGA) * 100
+# Draymond Green: Physical Attributes
+draymond_green <- read.csv("../data/draymond_green.csv")
+draymond_green_height <- draymond_green$`Height.w.shoes`
+draymond_green_weight <- as.vector(draymond_green$Weight)
+draymond_green_weight <- as.numeric(draymond_green_weight)
+
+# Tim Duncan: Power Forward (Large for Position)
+# 3-Pt Attempts
+tim_duncan_stats <- read.csv("../data/tim_duncan_stats.csv")
+tim_duncan_3PA <- as.vector(tim_duncan_stats$`X3PtA`)
+tim_duncan_3PA <- as.numeric(tim_duncan_3PA)
+# 3-Pt Percentage
+tim_duncan_3PP <- as.vector(tim_duncan_stats$`X3P.`)
+tim_duncan_3PP <- as.numeric(tim_duncan_3PP)
+# Total FG Percentage
+tim_duncan_FGP <- as.vector(tim_duncan_stats$`FG.`)
+tim_duncan_FGP <- as.numeric(tim_duncan_FGP)
+# Tim Duncan: Physical Attributes
+tim_duncan <- read.csv("../data/tim_duncan.csv")
+tim_duncan_height <- tim_duncan$`Height.w.o.Shoes`
+tim_duncan_weight <- as.vector(tim_duncan$Weight)
+tim_duncan_weight <- as.numeric(tim_duncan_weight)
+
+# Shaq: Dominant Center
+# 3-Pt Field Goals negligibly small, 2 attempted over 19 year career
+# Shaq: Physical Attributes
+shaq <- read.csv("../data/shaq.csv")
+shaq_height <- shaq$`Height.w.o.Shoes`
+shaq_weight <- as.vector(shaq$Weight)
+shaq_weight <- as.numeric(shaq_weight)
+
+# Create Data Frame
+heights <- c(steph_curry_height, draymond_green_height, tim_duncan_height)
+weights <- c(steph_curry_weight, draymond_green_weight, tim_duncan_weight)
+X3PA <- c(steph_curry_3PA, draymond_green_3PA, tim_duncan_3PA)
+X3PP <- c(steph_curry_3PP, draymond_green_3PP, tim_duncan_3PP)
+cs_players <- c("Stephen Curry", "Draymond Green", "Tim Duncan")
+case_study_df <- data.frame(cs_players, X3PA, X3PP, heights, weights)
+```
+
+``` {r, eval = FALSE}
+heights <- c(steph_curry_height, draymond_green_height, tim_duncan_height)
+weights <- c(steph_curry_weight, draymond_green_weight, tim_duncan_weight)
+X3PA <- c(steph_curry_3PA, draymond_green_3PA, tim_duncan_3PA)
+X3PP <- c(steph_curry_3PP, draymond_green_3PP, tim_duncan_3PP)
+cs_players <- c("Stephen Curry", "Draymond Green", "Tim Duncan")
+case_study_df <- data.frame(cs_players, X3PA, X3PP, heights, weights)
+```
+
+### Visualization:
+
+```{r Case Study Visualization, echo = FALSE}
+```
+
+Conclusion:
+-----------
+
+While we do believe that teams are shooting a greater quantity of 3-point shots, there is no indication, from championship rosters or drafted players, that teams are getting smaller physically. 

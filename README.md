@@ -20,8 +20,27 @@ Organization:
 
 **report** - Contains our final written report of our project
 
-**resources** - TBD
+**resources** - Empty
 
 Instructions:
 -------------
-TBD
+*When viewing this project, make sure to always open the project by opening the project file: `Stat133Project.Rproj` and then selecting files you wish to explore through RStudio.*
+
+To initialize the project:
+
+  1. Begin by clicking on the project file: `Stat133Project.Rproj` and opening it with RStudio.
+  2. Using Rstudio's file navigation system on the bottom right corner, open `skeleton.R` and run the entire file to initialize the project by gathering and cleaning data.
+  
+To view our analysis, visualizations, and/or case studies:
+
+  1. Navigate to the `code` directory.
+  2. Open the corresponding file you would like to view and run the entire file.
+  
+To view/generate our comprehensive report on our findings:
+
+  1. Navigate to the `report` directory and open `final_report.Rmd`.
+  2. Click on 'Knit PDF' or 'Knit HTML' at the top to generate a report file.
+  3. The report file is now saved and can be viewed in the `report` directory.
+
+
+

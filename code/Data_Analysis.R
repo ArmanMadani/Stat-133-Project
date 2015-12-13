@@ -1,3 +1,9 @@
+# Data Analysis
+
+all_champs <- read.csv("data/champ_data.csv")
+
+## ---- Data Analysis ----
+
 # Vector of total Field Goals Attempted per year
 vec_fga <- all_champs$FGA
 
