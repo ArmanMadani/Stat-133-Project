@@ -79,5 +79,40 @@ for (i in 1996:2015) {
   ch <- ch[c("Player", "Pos", "Ht", "Wt", "Average Height", "Average Weight", "Year")]
   champ <- rbind(champ, ch)
 }
-
 write.csv(champ, file = "data/roster.csv")
+
+# Case Study Player: Stephen Curry
+steph_curry <- readHTMLTable('rawdata/steph_curry.html')
+steph_curry <- as.data.frame(steph_curry[[11]])
+write.csv(steph_curry, 'data/steph_curry.csv')
+
+steph_curry_stats <- readHTMLTable('rawdata/steph_curry_career.html')
+steph_curry_stats <- steph_curry_stats$per_game
+write.csv(steph_curry_stats, 'data/steph_curry_stats.csv')
+
+# Case Study Player: Draymond Green
+draymond_green <- readHTMLTable('rawdata/draymond_green.html')
+draymond_green <- as.data.frame(draymond_green[[11]])
+write.csv(draymond_green, 'data/draymond_green.csv')
+
+draymond_green_stats <- readHTMLTable('rawdata/draymond_green.html')
+draymond_green_stats <- as.data.frame(draymond_green_stats[[12]])
+write.csv(draymond_green_stats, 'data/draymond_green_stats.csv')
+
+# Case Study Player: Tim Duncan
+tim_duncan <- readHTMLTable('rawdata/tim_duncan.html')
+tim_duncan <- as.data.frame(tim_duncan[[11]])
+write.csv(tim_duncan, 'data/tim_duncan.csv')
+
+tim_duncan_stats <- readHTMLTable('rawdata/tim_duncan.html')
+tim_duncan_stats <- as.data.frame(tim_duncan_stats[[12]])
+write.csv(tim_duncan_stats, 'data/tim_duncan_stats.csv')
+
+# Case Study Player: Shaq
+shaq <- readHTMLTable('rawdata/shaq.html')
+shaq <- as.data.frame(shaq[[11]])
+write.csv(shaq, 'data/shaq.csv')
+
+shaq_stats <- readHTMLTable('rawdata/shaq.html')
+shaq_stats <- as.data.frame(shaq_stats[[12]])
+write.csv(shaq_stats, 'data/shaq_stats.csv')
