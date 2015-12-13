@@ -27,8 +27,37 @@ for (i in 1996:2015) {
   download.file(url_championship_stats, paste0('rawdata/championship_stats', i, '.html'))
 }
 
-# Download data for Case Study Players
+# Download data for Case Study Player: Stephen Curry
+url_steph_curry <- 
+  'http://www.draftexpress.com/profile/Stephen-Curry-1170/'
+download.file(url_steph_curry, 'rawdata/steph_curry.html')
+url_steph_curry_career <- 
+  'http://www.basketball-reference.com/players/c/curryst01.html'
+download.file(url_steph_curry_career, 'rawdata/steph_curry_career.html')
 
+# Download data for Case Study Player: Draymond Green
+url_draymond_green <- 
+  'http://www.draftexpress.com/profile/Draymond-Green-5859/'
+download.file(url_draymond_green, 'rawdata/draymond_green.html')
+url_draymond_green_career <- 
+  'http://www.basketball-reference.com/players/g/greendr01.html'
+download.file(url_draymond_green_career, 'rawdata/draymond_green_career.html')
+
+# Download data for Case Study Player: Tim Duncan
+url_tim_duncan <-
+  'http://www.draftexpress.com/profile/Tim-Duncan-2292/'
+download.file(url_tim_duncan, 'rawdata/tim_duncan.html')
+url_tim_duncan_career <-
+  'http://www.basketball-reference.com/players/d/duncati01.html'
+download.file(url_tim_duncan_career, 'rawdata/tim_duncan_career.html')
+
+# Download data for Case Study Player: Shaq
+url_shaq <-
+  'http://www.draftexpress.com/profile/Shaquille-O-neal-3796/'
+download.file(url_shaq, 'rawdata/shaq.html')
+url_shaq_career <-
+  'http://www.basketball-reference.com/players/o/onealsh01.html'
+download.file(url_shaq_career, 'rawdata/shaq_career.html')
 
 # Download data for Championship team lineups
 url_champ_stats <- 'http://www.basketball-reference.com/teams/HOU/1995.html'
@@ -75,4 +104,3 @@ url_champ_stats <- 'http://www.basketball-reference.com/teams/GSW/2015.html'
 download.file(url_champ_stats, paste0('rawdata/champion_stats', 2015, '.html'))
 
 suppressWarnings(source("code/data_cleanprep.R"))
-
