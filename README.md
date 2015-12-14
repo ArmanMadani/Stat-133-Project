@@ -10,7 +10,16 @@ Our project's goal is to analyze trends over time within the NBA, specifically a
 
 Organization:
 -------------
+`skeleton.R` - code for creating subdirectories and downloading data
+
+`Stat133Project.Rproj` - RStudio project file; use for opening project
+
 **code** - All of our project's working code is stored within this directory
+
+  * case_study.R
+  * data_analysis.R
+  * data_cleanprep.R
+  * visualizations.R
 
 **data** - All of our project's cleaned, working data is stored within this directory as .csv files
 
@@ -20,13 +29,17 @@ Organization:
 
 **report** - Contains our final written report of our project
 
-**resources** - Empty
+  * final_report.Rmd
+  * final_report.html
+  * final_report.pdf
+
+**resources** - Directory for resources (empty)
 
 Instructions:
 -------------
-*When viewing this project, make sure to always open the project by opening the project file: `Stat133Project.Rproj` and then selecting files you wish to explore through RStudio.*
+*When opening this project, please make sure to always begin by opening the project file: `Stat133Project.Rproj` and then selecting files you wish to explore through RStudio.*
 
-To initialize the project:
+To initialize this project:
 
   1. Begin by clicking on the project file: `Stat133Project.Rproj` and opening it with RStudio.
   2. Using Rstudio's file navigation system on the bottom right corner, open `skeleton.R` and run the entire file to initialize the project by gathering and cleaning data.
