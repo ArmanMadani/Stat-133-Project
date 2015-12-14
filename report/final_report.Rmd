@@ -2,7 +2,7 @@
 title: 'NBA Trends: Final Report'
 author: "Arman Madani, Eric Zhao, Kuang Li"
 date: "December 12, 2015"
-output: html_document
+output: pdf_document
 ---
 
 ```{r, echo = FALSE}
