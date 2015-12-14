@@ -244,4 +244,4 @@ case_study_df <- data.frame(cs_players, X3PA, X3PP, heights, weights)
 Conclusion:
 -----------
 
-While we do believe that teams are shooting a greater quantity of 3-point shots, there is no indication, from championship rosters or drafted players, that teams are getting smaller physically. 
+What we found through the plots and analysis was that successful teams are shooting more three pointers but their percentages are not increasing. There's also no trend toward smaller players as "small ball" would imply because the physical attributes of draft picks and championship rosters are staying relatively constant. So calling this trend "small ball" is a misnomer, teams aren't playing smaller players, they're shooting more threes with similar percentages of success which is a more efficient strategy (intuitively, expected point per shot increases).
